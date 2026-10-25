@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Story Video Studio</title>
+<style>
+body{margin:0;min-height:100vh;display:grid;place-items:center;background:#14151a;color:#eceef4;font:15px/1.5 "Segoe UI",system-ui,sans-serif;padding:16px;text-align:center}
+.box{max-width:420px}h1{font-size:18px;margin:0 0 8px}p{color:#9aa0b4;margin:6px 0}a{color:#e9b44c}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Story Video Studio</h1>
+  <p id="msg">Đang mở app…</p>
+</div>
+<script>
+// Link thật của app (Cloudflare) đổi mỗi lần máy khởi động lại; app tự ghi link mới vào target.json.
+// ?t= để không dùng bản lưu đệm cũ.
+fetch("target.json?t=" + Date.now(), {cache: "no-store"})
+  .then(r => r.json())
+  .then(d => {
+    if (!d.url) throw new Error("no url");
+    document.getElementById("msg").innerHTML = 'Đang chuyển tới app… Nếu không tự chuyển, bấm <a href="' + d.url + '">vào đây</a>.';
+    location.replace(d.url + location.hash);
+  })
+  .catch(() => {
+    document.getElementById("msg").textContent = "Chưa lấy được link app. Máy chủ ở nhà có thể đang tắt hoặc vừa khởi động lại; thử lại sau 1-2 phút.";
+  });
+</script>
+</body>
+</html>
